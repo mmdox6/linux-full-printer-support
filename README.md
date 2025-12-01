@@ -1,5 +1,5 @@
 # Linux-full-printer-support
-This is the way of installing full Printer and Scanner support on various Linux distros, such as Arch, Debian and Fedora
+This is the way of installing full Printer and Scanner support on various Linux distros, such as Arch, Debian and Fedora.
 Sometimes cups or gutenprint alone isn't enough to get your printer working. I had said problem with my BROTHER printer, both with the libre drivers and the propietary one from BROTHER themself.
 After an amount of trying I got it to work. But I did not want my laptop to be limited to a small load of printers but be able to print in every household or workspace so I created these command lists for
 Archlinux(pacman), Debian(apt) and Fedora(dnf) to get as good as possible printing support.
