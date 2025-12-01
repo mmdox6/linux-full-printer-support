@@ -1,7 +1,5 @@
 ## First install the necessary packages
-
-  sudo pacman -S --needed cups cups-filters cups-pdf ghostscript gsfonts gutenprint foomatic-db foomatic-db-ppds system-config-printer avahi nss-mdns ipp-usb smbclient sane sane-airscan hplip
-
+	sudo pacman -S --needed cups cups-filters cups-pdf ghostscript gsfonts gutenprint foomatic-db foomatic-db-ppds system-config-printer avahi nss-mdns ipp-usb smbclient sane sane-airscan hplip
 
 ## Enable the CUPS Service using systemctl
   sudo systemctl enable --now cups.service
