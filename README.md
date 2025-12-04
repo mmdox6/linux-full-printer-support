@@ -7,6 +7,6 @@ Archlinux(pacman), Debian(apt) and Fedora(dnf) to get as good as possible printi
 Typing/Pasting in these commands should give you full printer and scanner support on Arch Linux, Debian and Fedora. The same applies for their derivatives aslong as the
 packages are available in their package manager
 
-This is without a guarantee, I created the list mainly for myself on Arch I had no problem with it
+This is without a guarantee, I created the lists for my Arch system and tried to adjust them to Debian and Fedora as good as possible.
 
 **NOTE: If you are using Devuan... or Artix... (non-systemd using distros) you will have to customize the commands to your need**
