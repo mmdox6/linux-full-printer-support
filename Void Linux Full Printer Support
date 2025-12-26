@@ -1,0 +1,45 @@
+## First install the necessary packages
+  ## In order to install "foomatic-db-nonfree" you will first have to install the "void-repo-nonfree" package in order to add the non-free repo.
+      sudo xbps-install -S void-repo-nonfree
+      sudo xbps-install -S
+    ## If you wish to keep your system free/libre simply remove the "foomatic-db-nonfree" package from the list of to-be-installed packages
+  sudo xbps-install -S cups cups-filters cups-pdf ghostscript gsfonts gutenprint foomatic-db foomatic-db-nonfree system-config-printer avahi nss-mdns ipp-usb smbclient sane sane-airscan hplip
+
+## Enable the CUPS Service
+  sudo ln -s /etc/sv/cupsd /var/service
+  sudo sv up cupsd
+    ## to check wether the CUPS Service is running, use this command:
+      sudo sv status cupsd
+    ## you should get something like this:
+      "run: cupsd: (pid 9829) 26s"
+
+## Enable the AVAHI service
+  sudo ln -s /etc/sv/avahi-daemon /var/service
+  sudo sv up avahi-daemon
+    ## to check wether the avahi-daemon is running, use this command:
+      sudo sv status avahi-daemon
+    ## you should get something like this:
+      "run: avahi-daemon: (pid 9879) 17s"
+
+## Enable the IPP-over-USB Service (many modern printers use it)
+  sudo ln -s /etc/sv/ipp-usb /var/service
+  sudo sv up ipp-usb
+    ## to check wether the ipp-usb service is running... you know the drill
+
+## Open the config and change „hosts“ using your favourite Text Editor (vim, nano,...)
+  sudo nano /etc/nsswitch.conf
+    hosts: files mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] 	dns mymachines
+
+## restart the avahi-daemon
+  sudo sv restart avahi-daemon
+
+## Configure your firewall to allow following ports (in this case ufw/gufw) You may need to the command to your Firewall Service
+  sudo ufw allow 631/tcp
+  sudo ufw allow 5353/udp
+
+## Add yourself to the scanner Group
+  sudo gpasswd -a "$USER" scanner
+
+## Log out and back in
+
+## Add your printer via the installed package "system-config-printer"
