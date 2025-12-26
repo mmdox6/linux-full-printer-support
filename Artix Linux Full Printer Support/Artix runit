@@ -5,7 +5,7 @@ NOTE: to get a better experience I recommend adding the Arch repos in order to g
       Include = /etc/pacman.d/mirrorlist-arch
   3. Resynchronise your package database with
       sudo pacman -Sy
-  4. Add the "ipp-usb" and "sane-airscan" packages to the long list of packages to install
+  4. Add the "ipp-usb" packages to the long list of packages to install
 
 ## First install the necessary packages
 	sudo pacman -S --needed cups cups-filters cups-pdf ghostscript gsfonts gutenprint foomatic-db foomatic-db-ppds system-config-printer avahi nss-mdns smbclient sane sane-runit hplip
@@ -25,6 +25,14 @@ NOTE: to get a better experience I recommend adding the Arch repos in order to g
       sudo sv status avahi-daemon
     ## you should get something like this:
       run: avahi-daemon: (pid 9879) 17s
+
+## Enable the saned service
+	sudo ln -s /etc/runit/sv/saned /run/runit/service
+	sudo sv up saned
+		## to check wether saned is running, use this command:
+      		sudo sv status saned
+    	## you should get something like this:
+     		run: saned: (pid 6711) 11s
 
 ## Enable the ipp-usb service (if added from the arch repo)
   NOTE: since we installed "ipp-usb" from the arch repo, it does not automatically create a service file in our /etc/runit/sv/ directory. Therefore we will have to create the file manually
