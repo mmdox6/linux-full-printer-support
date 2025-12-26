@@ -37,8 +37,9 @@
   sudo ufw allow 631/tcp
   sudo ufw allow 5353/udp
 
-## Add yourself to the scanner Group
+## Add yourself to the scanner and lp (printer) Group
   sudo gpasswd -a "$USER" scanner
+  sudo gpasswd -a "$USER" lp
 
 ## Log out and back in
 
