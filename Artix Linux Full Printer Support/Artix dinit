@@ -1,0 +1,76 @@
+NOTE: to get a better experience I recommend adding the Arch repos in order to get a package, that is missing in the Artix repos
+  1. Install the "artix-archlinux-support" package
+  2. Edit the "/etc/pacman.conf" file and add the arch repo at the bottom like this:
+      [extra]
+      Include = /etc/pacman.d/mirrorlist-arch
+  3. Populate the archlinux keyring
+	 sudo pacman-key --populate archlinux
+  4. Resynchronise your package database with
+      sudo pacman -Sy
+  5. Add the "ipp-usb" packages to the long list of packages to install
+
+## First install the necessary packages
+	sudo pacman -S --needed cups-dinit cups-filters cups-pdf ghostscript gsfonts gutenprint foomatic-db foomatic-db-ppds system-config-printer avahi-dinit nss-mdns smbclient sane-dinit hplip
+
+## Enable the CUPS Service
+  sudo dinitctl enable cupsd
+  sudo dinitctl start cupsd
+  ## to check wether the CUPS Service is running, use this command:
+      sudo dinitctl status cupsd
+  ## you should get something like this:
+      Service: cupsd
+        State: STARTED
+        Activation: explicitly started
+        Process ID: 475
+
+## Enable the Avahi Daemon
+  sudo dinitctl enable avahi-daemon
+  sudo dinitctl start avahi-daemon
+  ## to check wether the Avahi Daemon is running, use this command:
+      sudo dinitctl status avahi-daemon
+  ## you should get something like this:
+      Service: avahi-daemon
+        State: STARTED
+        Activation: explicitly started
+        Process ID: 11435
+
+## Enable the saned service
+  sudo dinitctl enable saned
+
+## Enable the ipp-usb service (if added from the arch repo)
+  NOTE: since we installed "ipp-usb" from the arch repo, it does not automatically create a service file in our /etc/dinit.d directory. Therefore we will have to create the file manually
+    ## Create a service file (replace vim with your editor of choice)
+      sudo vim /etc/dinit.d/ipp-usb
+        type		= process
+        command		= /usr/bin/ipp-usb -f
+        smooth-recovery	= true
+        depends-on	= dbus
+        depends-on	= avahi-daemon
+        depends-on 	= local.target
+        before		= login.target
+      ## Now we make the file executable
+        sudo chmod +x /etc/dinit.d/ipp-usb
+      ## Now we can finally start the service with
+        sudo dinitctl enable ipp-usb
+        sudo dinitctl start ipp-usb
+
+## Open the config and change „hosts“ using your favourite Text Editor (vim, nano,...)
+	sudo vim /etc/nsswitch.conf
+	  hosts: files mdns_minimal [NOTFOUND=return] resolve [!UNAVAIL=return] dns mymachines
+
+## restart the avahi-daemon
+  sudo dinitctl restart avahi-daemon
+
+## Configure your firewall to allow following ports (in this case ufw/gufw) You may need to the command to your Firewall Service
+  sudo ufw allow 631/tcp
+  sudo ufw allow 5353/udp
+
+## Add yourself to the scanner and lp (printer) Group
+  sudo gpasswd -a "$USER" scanner
+  sudo gpasswd -a "$USER" lp
+  sudo gpasswd -a "$USER" lpadmin NOTE: the person in this group has 100% modifying right for printers. If the person is you/the owner of the PC this is fine. If you're adding
+                                        a family user, coworker,... someone who should not have administrative rights, simply don't add them to the lpadmin group
+
+## Log out and back in
+
+## Add your printer via the installed package "system-config-printer"   
