@@ -26,6 +26,8 @@
   sudo gpasswd -a "$USER" lp
   sudo gpasswd -a "$USER" lpadmin NOTE: the person in this group has 100% modifying right for printers. If the person is you/the owner of the PC this is fine. If you're adding
                                         a family user, coworker,... someone who should not have administrative rights, simply don't add them to the lpadmin group
+	## In case one or more of the groups are missing (e.g. lpadmin), simply create these groups and add yourself to them
+		sudo groupadd lpadmin
 
 ## Log out and back in
 
